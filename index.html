@@ -1058,18 +1058,65 @@
     renderCalendar();
   });
 
-  document.getElementById('btnSubmit').addEventListener('click', () => {
+  const BOOKING_ENDPOINT = 'https://ahnptkmqpwzviznvlpjm.supabase.co/functions/v1/bravo-agenda-booking';
+
+  document.getElementById('btnSubmit').addEventListener('click', async () => {
+    const btn = document.getElementById('btnSubmit');
+    const label = document.getElementById('submitLabel');
+    const originalLabel = label.textContent;
+
     const name = document.getElementById('fName').value.trim();
     const email = document.getElementById('fEmail').value.trim();
+    const company = document.getElementById('fCompany').value.trim();
+    const phone = document.getElementById('fPhone').value.trim();
+    const notes = document.getElementById('fNotes').value.trim();
+
     if (!name || !email) {
       alert('Por favor completa al menos nombre y email.');
       return;
     }
+
     const d = selectedDate;
-    const dayName = DAYS_ES_DISPLAY[d.getDay()];
-    const whenText = dayName.charAt(0).toUpperCase() + dayName.slice(1) + ' ' + d.getDate() + ' de ' + MONTHS[d.getMonth()].toLowerCase() + ' · ' + selectedTime;
-    document.getElementById('confWhen').textContent = whenText;
-    document.getElementById('confirmation').classList.add('active');
+    const year = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    const dateStr = year + '-' + mm + '-' + dd;
+
+    btn.disabled = true;
+    label.textContent = 'Reservando…';
+
+    try {
+      const resp = await fetch(BOOKING_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, email, company, phone, notes,
+          date: dateStr,
+          time: selectedTime
+        })
+      });
+
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || ('Error ' + resp.status));
+
+      const dayName = DAYS_ES_DISPLAY[d.getDay()];
+      const whenText = dayName.charAt(0).toUpperCase() + dayName.slice(1) + ' ' + d.getDate() + ' de ' + MONTHS[d.getMonth()].toLowerCase() + ' · ' + selectedTime;
+      document.getElementById('confWhen').textContent = whenText;
+
+      if (data.meetLink) {
+        const conf = document.querySelector('.conf-card p');
+        if (conf) {
+          conf.innerHTML = 'Te llegamos al correo <strong>' + email + '</strong> con la invitación.<br><br><a href="' + data.meetLink + '" target="_blank" style="color: #a08550; font-weight: 600; text-decoration: none;">Abrir Google Meet →</a>';
+        }
+      }
+
+      document.getElementById('confirmation').classList.add('active');
+    } catch (err) {
+      console.error(err);
+      alert('No pudimos confirmar la reserva: ' + err.message + '\n\nPor favor escríbenos a soporte@bravo.com.pe o por WhatsApp +51 922 621 314.');
+      btn.disabled = false;
+      label.textContent = originalLabel;
+    }
   });
 
   renderCalendar();
