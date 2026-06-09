@@ -321,6 +321,30 @@
     box-shadow: var(--shadow-md);
   }
 
+  /* Google Calendar iframe wrapper: no padding so the iframe fills the card cleanly */
+  .gcal-widget {
+    padding: 0;
+    overflow: hidden;
+    min-height: 720px;
+    display: flex;
+    flex-direction: column;
+  }
+  .gcal-frame {
+    flex: 1;
+    display: flex;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    min-height: 720px;
+  }
+  @media (max-width: 900px) {
+    .gcal-widget { min-height: 700px; }
+    .gcal-frame { min-height: 700px; }
+  }
+  @media (max-width: 480px) {
+    .gcal-widget { min-height: 680px; }
+    .gcal-frame { min-height: 680px; }
+  }
+
   .step + .step {
     margin-top: 28px;
     padding-top: 28px;
@@ -785,96 +809,19 @@
       </div>
     </section>
 
-    <!-- RIGHT -->
-    <section class="widget">
-
-      <div class="step" id="step1">
-        <div class="step-head">
-          <div class="step-title">
-            <span class="step-num">1</span>
-            <span class="step-label">Elige una fecha</span>
-          </div>
-          <span class="step-selected" id="dateSelected"></span>
-        </div>
-
-        <div class="cal-head">
-          <span class="cal-month" id="calMonth">Junio 2026</span>
-          <div class="cal-nav">
-            <button class="cal-arrow" id="calPrev" aria-label="Mes anterior">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <button class="cal-arrow" id="calNext" aria-label="Mes siguiente">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="cal-grid" id="calGrid">
-          <div class="cal-weekday">L</div>
-          <div class="cal-weekday">M</div>
-          <div class="cal-weekday">M</div>
-          <div class="cal-weekday">J</div>
-          <div class="cal-weekday">V</div>
-          <div class="cal-weekday">S</div>
-          <div class="cal-weekday">D</div>
-        </div>
+    <!-- RIGHT — Google Calendar Appointment Scheduling -->
+    <section class="widget gcal-widget">
+      <div class="gcal-frame">
+        <iframe
+          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2Q6q9mtVDEbRhFsLk5LJVu0Sr_AHSqPfoTAJKwqhF9XkwlB_JXCeg__gpclAgJ34LnQaRPAVDO?gv=true"
+          title="Reserva una llamada con BRAVO"
+          loading="lazy"
+          style="border: 0; width: 100%; height: 100%; min-height: 720px; border-radius: var(--r-lg); background: var(--card);"
+        ></iframe>
       </div>
-
-      <div class="step" id="step2">
-        <div class="step-head">
-          <div class="step-title">
-            <span class="step-num">2</span>
-            <span class="step-label">Elige una hora</span>
-          </div>
-          <span class="step-selected" id="timeSelected"></span>
-        </div>
-
-        <div id="timesContainer">
-          <div class="times-empty">Selecciona una fecha primero</div>
-        </div>
-      </div>
-
-      <div class="step" id="step3">
-        <div class="step-head">
-          <div class="step-title">
-            <span class="step-num">3</span>
-            <span class="step-label">Tus datos</span>
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-field">
-            <label class="form-label">Nombre</label>
-            <input class="form-input" type="text" id="fName" placeholder="Tu nombre completo">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Empresa</label>
-            <input class="form-input" type="text" id="fCompany" placeholder="Nombre de la empresa">
-          </div>
-          <div class="form-field">
-            <label class="form-label">Email</label>
-            <input class="form-input" type="email" id="fEmail" placeholder="tu@empresa.com">
-          </div>
-          <div class="form-field">
-            <label class="form-label">WhatsApp</label>
-            <input class="form-input" type="tel" id="fPhone" placeholder="+51 999 999 999">
-          </div>
-          <div class="form-field full">
-            <label class="form-label">¿De qué te gustaría hablar?</label>
-            <textarea class="form-textarea" id="fNotes" placeholder="Cuéntanos brevemente qué te tiene atorado, qué quieres construir, o qué quieres que veamos."></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="submit">
-        <button class="btn-submit" id="btnSubmit" disabled>
-          <span id="submitLabel">Selecciona fecha y hora</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
-        <div class="submit-note">No se cobra ni hay compromiso de compra.</div>
-      </div>
-
     </section>
+
+  
 
   </div>
 
@@ -885,242 +832,9 @@
   <span><a href="https://bravo.com.pe">bravo.com.pe</a></span>
 </footer>
 
-<div class="confirmation" id="confirmation">
-  <div class="conf-card">
-    <div class="conf-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <h2>Reserva confirmada</h2>
-    <p>Te llegará un correo con el link de Google Meet en unos minutos.</p>
-    <div class="conf-when" id="confWhen"></div>
-    <button class="conf-close" onclick="document.getElementById(&apos;confirmation&apos;).classList.remove(&apos;active&apos;)">Cerrar</button>
-  </div>
-</div>
 
-<script>
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
 
-  let viewYear = today.getFullYear();
-  let viewMonth = today.getMonth();
-  let selectedDate = null;
-  let selectedTime = null;
-
-  const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  const DAYS_ES = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
-  const DAYS_ES_DISPLAY = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-
-  const unavailableSlots = new Set(['10:30', '14:00', '16:00']);
-
-  function renderCalendar() {
-    const grid = document.getElementById('calGrid');
-    [...grid.querySelectorAll('.cal-day, .cal-day-empty')].forEach(el => el.remove());
-
-    document.getElementById('calMonth').textContent = MONTHS[viewMonth] + ' ' + viewYear;
-
-    const firstDay = new Date(viewYear, viewMonth, 1);
-    const lastDay = new Date(viewYear, viewMonth + 1, 0);
-    const startDayOfWeek = (firstDay.getDay() + 6) % 7;
-    const daysInMonth = lastDay.getDate();
-
-    for (let i = 0; i < startDayOfWeek; i++) {
-      const empty = document.createElement('div');
-      empty.className = 'cal-day empty';
-      grid.appendChild(empty);
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const cellDate = new Date(viewYear, viewMonth, day);
-      const cell = document.createElement('button');
-      cell.className = 'cal-day';
-      cell.textContent = day;
-
-      const isPast = cellDate < today;
-      const dayOfWeek = cellDate.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      const isToday = cellDate.getTime() === today.getTime();
-
-      if (isToday) cell.classList.add('today');
-
-      if (isPast) {
-        cell.classList.add('past');
-        cell.disabled = true;
-      } else if (isWeekend) {
-        cell.classList.add('disabled');
-        cell.disabled = true;
-      } else {
-        cell.classList.add('available');
-        cell.addEventListener('click', () => selectDate(cellDate, cell));
-      }
-
-      if (selectedDate && cellDate.getTime() === selectedDate.getTime()) {
-        cell.classList.add('selected');
-      }
-
-      grid.appendChild(cell);
-    }
-
-    const prevMonthEnd = new Date(viewYear, viewMonth, 0);
-    document.getElementById('calPrev').disabled = prevMonthEnd < today;
-  }
-
-  const TIMES = [
-    '09:00', '09:30', '10:00', '10:30',
-    '11:00', '11:30', '14:00', '14:30',
-    '15:00', '15:30', '16:00', '16:30',
-    '17:00', '17:30'
-  ];
-
-  function renderTimes() {
-    const container = document.getElementById('timesContainer');
-    if (!selectedDate) {
-      container.innerHTML = '<div class="times-empty">Selecciona una fecha primero</div>';
-      return;
-    }
-
-    const grid = document.createElement('div');
-    grid.className = 'times-grid';
-
-    TIMES.forEach(time => {
-      const btn = document.createElement('button');
-      btn.className = 'time-slot';
-      btn.textContent = time;
-      if (unavailableSlots.has(time)) {
-        btn.disabled = true;
-      } else {
-        btn.addEventListener('click', () => selectTime(time, btn));
-      }
-      if (selectedTime === time) btn.classList.add('selected');
-      grid.appendChild(btn);
-    });
-
-    container.innerHTML = '';
-    container.appendChild(grid);
-  }
-
-  function selectDate(date, cell) {
-    selectedDate = date;
-    selectedTime = null;
-    renderCalendar();
-    renderTimes();
-    updateUI();
-  }
-
-  function selectTime(time, btn) {
-    selectedTime = time;
-    document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
-    btn.classList.add('selected');
-    updateUI();
-  }
-
-  function updateUI() {
-    if (selectedDate) {
-      document.getElementById('step1').classList.add('done');
-      const d = selectedDate;
-      const dayName = DAYS_ES_DISPLAY[d.getDay()];
-      document.getElementById('dateSelected').textContent = dayName + ' ' + d.getDate() + ' de ' + MONTHS[d.getMonth()].toLowerCase();
-    } else {
-      document.getElementById('step1').classList.remove('done');
-      document.getElementById('dateSelected').textContent = '';
-    }
-
-    if (selectedTime) {
-      document.getElementById('step2').classList.add('done');
-      document.getElementById('timeSelected').textContent = selectedTime;
-    } else {
-      document.getElementById('step2').classList.remove('done');
-      document.getElementById('timeSelected').textContent = '';
-    }
-
-    const btn = document.getElementById('btnSubmit');
-    const label = document.getElementById('submitLabel');
-    if (selectedDate && selectedTime) {
-      btn.disabled = false;
-      const d = selectedDate;
-      label.textContent = 'Confirmar reserva — ' + d.getDate() + ' ' + MONTHS[d.getMonth()].toLowerCase() + ', ' + selectedTime;
-    } else if (selectedDate) {
-      btn.disabled = true;
-      label.textContent = 'Selecciona una hora';
-    } else {
-      btn.disabled = true;
-      label.textContent = 'Selecciona fecha y hora';
-    }
-  }
-
-  document.getElementById('calPrev').addEventListener('click', () => {
-    viewMonth--;
-    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
-    renderCalendar();
-  });
-  document.getElementById('calNext').addEventListener('click', () => {
-    viewMonth++;
-    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
-    renderCalendar();
-  });
-
-  const BOOKING_ENDPOINT = 'https://ahnptkmqpwzviznvlpjm.supabase.co/functions/v1/bravo-agenda-booking';
-
-  document.getElementById('btnSubmit').addEventListener('click', async () => {
-    const btn = document.getElementById('btnSubmit');
-    const label = document.getElementById('submitLabel');
-    const originalLabel = label.textContent;
-
-    const name = document.getElementById('fName').value.trim();
-    const email = document.getElementById('fEmail').value.trim();
-    const company = document.getElementById('fCompany').value.trim();
-    const phone = document.getElementById('fPhone').value.trim();
-    const notes = document.getElementById('fNotes').value.trim();
-
-    if (!name || !email) {
-      alert('Por favor completa al menos nombre y email.');
-      return;
-    }
-
-    const d = selectedDate;
-    const year = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    const dateStr = year + '-' + mm + '-' + dd;
-
-    btn.disabled = true;
-    label.textContent = 'Reservando…';
-
-    try {
-      const resp = await fetch(BOOKING_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name, email, company, phone, notes,
-          date: dateStr,
-          time: selectedTime
-        })
-      });
-
-      const data = await resp.json();
-      if (!resp.ok) throw new Error(data.error || ('Error ' + resp.status));
-
-      const dayName = DAYS_ES_DISPLAY[d.getDay()];
-      const whenText = dayName.charAt(0).toUpperCase() + dayName.slice(1) + ' ' + d.getDate() + ' de ' + MONTHS[d.getMonth()].toLowerCase() + ' · ' + selectedTime;
-      document.getElementById('confWhen').textContent = whenText;
-
-      if (data.meetLink) {
-        const conf = document.querySelector('.conf-card p');
-        if (conf) {
-          conf.innerHTML = 'Te llegamos al correo <strong>' + email + '</strong> con la invitación.<br><br><a href="' + data.meetLink + '" target="_blank" style="color: #a08550; font-weight: 600; text-decoration: none;">Abrir Google Meet →</a>';
-        }
-      }
-
-      document.getElementById('confirmation').classList.add('active');
-    } catch (err) {
-      console.error(err);
-      alert('No pudimos confirmar la reserva: ' + err.message + '\n\nPor favor escríbenos a soporte@bravo.com.pe o por WhatsApp +51 922 621 314.');
-      btn.disabled = false;
-      label.textContent = originalLabel;
-    }
-  });
-
-  renderCalendar();
-</script>
+<!-- No custom JS needed: Google Calendar iframe handles the booking flow -->
 
 </body>
 </html>
